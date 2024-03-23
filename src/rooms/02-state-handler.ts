@@ -7,7 +7,7 @@ export class Player extends Schema {
     maxHP = 0;
 
     @type("number")
-    hp = 0;
+    hP = 0;
 
     @type("number")
     speed = 0;
@@ -46,7 +46,7 @@ export class State extends Schema {
     createPlayer(sessionId: string, data: any) {
         const player = new Player();
         player.maxHP = data.hp;
-        player.hp = data.hp;
+        player.hP = data.hp;
         player.speed = data.speed;
 
         this.players.set(sessionId, player);
@@ -87,7 +87,7 @@ export class StateHandlerRoom extends Room<State> {
 
         this.onMessage("damage", (client, data) => {
            const player = this.state.players.get(data.id);
-           player.hp -= data.value;
+           player.hP -= data.value;
         });
 
     });
