@@ -68,6 +68,12 @@ export class State extends Schema {
         player.rX = data.rX;
         player.rY = data.rY;
     }
+
+    resetPlayer (player: Player) {
+        
+        player.hP = player.maxHP;
+    }
+
 }
 
 export class StateHandlerRoom extends Room<State> {
@@ -90,6 +96,12 @@ export class StateHandlerRoom extends Room<State> {
            player.hP -= data.value;
         });
 
+        this.onMessage("death", (client, data) => {
+            this.broadcast("Death", data, {except: client});
+            const player = this.state.players.get(data);
+            this.state.resetPlayer(player);
+         });
+
     });
 
        
@@ -101,7 +113,7 @@ export class StateHandlerRoom extends Room<State> {
     }
 
     onJoin (client: Client, data: any) {
-        client.send("hello", "world");
+        client.send("Player", "joined");
         this.state.createPlayer(client.sessionId, data);
     }
 
